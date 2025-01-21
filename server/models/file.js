@@ -9,11 +9,11 @@ const fileSchema  = new mongoose.Schema({
         type:String,
         required:true
     },
-    downloadContent:{
-        type: Number,
-        required: true,
-        default: 0
-    }
+    // downloadContent:{
+    //     type: Number,
+    //     required: true,
+    //     default: 0
+    // }
 });
 
 

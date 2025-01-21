@@ -1,54 +1,39 @@
-import { useState, useEffect, useRef } from 'react';
-import './App.css';
-import { uploadFile } from './services/api';
-
+import Login from './components/Login';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import Signup from './components/Signup';
+import Homepage from './components/Homepage';
+import { useState } from 'react';
 
 function App() {
-  const[file, setFile] = useState('');
-  const[result, setResult] = useState('');
 
-  const fileInputRef = useRef();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const logo = "https://i.pinimg.com/originals/16/46/24/1646243661201a0892cc4b1a64fcbacf.jpg";
-
-  useEffect(() => {
-    const getImage = async() => {
-      if(file){
-        const data = new FormData();
-        data.append("name", file.name);
-        data.append("file", file);
-
-        let response = await uploadFile(data);
-        setResult(response.path);
-      }
-    }
-    getImage();
-  }, [file])
-
-  const onUploadClick = () => {
-    fileInputRef.current.click();
+  const handleAuthenticated = () => {
+    setIsAuthenticated(true);
   }
 
   return (
-    <div className="container">
-      <img src={logo} alt="banner" className="image" />
-      
-      <div className="wrapper">
-        <h1>Simple file sharing </h1>
-        <p>Upload and share the download link. </p>
-
-        <button onClick={() => onUploadClick()}>Upload</button>
-
-        <input type="file" 
-          ref={fileInputRef}
-          style={{display: "none"}}
-          onChange={(e) => setFile(e.target.files[0])}
-        />
-
-        <a href={result} target="_blank">{result}</a>
-
+    <BrowserRouter>
+      <div style={{height: '100%', width: '100%'}}>
+        <Routes>
+          <Route path='/' element={<Navigate to="/login"/>}/>
+          <Route 
+            path='/login' 
+            element={
+              <Login/>
+            }
+          />
+          <Route 
+            path='/home' 
+            element={<Homepage/>}
+          />
+          <Route 
+            path='/signup' 
+            element={<Signup/>}
+          />
+        </Routes>
       </div>
-    </div>
+    </BrowserRouter>
   );
 }
 
